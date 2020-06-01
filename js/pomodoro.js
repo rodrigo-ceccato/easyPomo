@@ -11,6 +11,7 @@ let isCounting = false;
 let isResting = false;
 
 displayTimer(0);
+var alertAudio = new Audio('sfx/bell.mp3');
 
 
 function startOrResume() {
@@ -40,11 +41,13 @@ var timeCounter = setInterval(function() {
                     currTime = 0;
                     isResting = false;
                     pomoCount = 0;
+                    alertAudio.play();
                 }
             } else { // if on short rest
                 if (currTime >= shortRestTime) {
                     currTime = 0;
                     isResting = false;
+                    alertAudio.play();
                 }
             }
 
@@ -53,7 +56,7 @@ var timeCounter = setInterval(function() {
                 currTime = 0;
                 isResting = true;
                 pomoCount = pomoCount + 1;
-
+                alertAudio.play();
             }
 
         }
