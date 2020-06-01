@@ -63,7 +63,7 @@ var timeCounter = setInterval(function() {
 
         displayTimer(currTime)
     }
-}, 10);
+}, 1000);
 
 
 function secondsToString(timeValue) {
