@@ -39,6 +39,7 @@ var timeCounter = setInterval(function() {
                 if (currTime >= longRestTime) {
                     currTime = 0;
                     isResting = false;
+                    pomoCount = 0;
                 }
             } else { // if on short rest
                 if (currTime >= shortRestTime) {
@@ -83,18 +84,19 @@ function secondsToString(timeValue) {
 }
 
 function displayTimer(timeValue) {
-    timeValueString = secondsToString(timeValue);
-
-    document.getElementById("timeDisplay").innerHTML = timeValueString;
-    document.getElementById("pomoCountHTML").innerHTML = pomoCount;
-
+    let infoText = ""
+    
     // update progress bar
     let progress = 0;
     let progressBar = document.getElementById("progressbarstatus")
     if (!isResting) {
+        timeValueString = secondsToString(timeValue);
+        infoText = "On pomo: " + (pomoCount+1) + " | " + pomosBeforeLongRest;
         progressBar.style.backgroundColor = '#696969';
         progress = (timeValue / focusTime) * 100;
     } else {
+        timeValueString = secondsToString(shortRestTime-timeValue);
+        infoText = "Resting"
         progressBar.style.backgroundColor = '#8FBC8F';
         progress = 100 - (timeValue / shortRestTime) * 100;
 
@@ -102,7 +104,8 @@ function displayTimer(timeValue) {
     let formatedProgress = "" + progress + "%"
     progressBar.style.width = formatedProgress;
 
-
-
+    
+    document.getElementById("infoText").innerHTML = infoText;
+    document.getElementById("timeDisplay").innerHTML = timeValueString;
 
 }

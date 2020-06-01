@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,49 +11,26 @@
     <link rel="stylesheet" type="text/css" href="css/mainstyle.css">
     <title>EasyPomo</title>
 </head>
-
-
 <body>
-    <style>
-        #timedisplay {
-        font-family: monospace;
-        font-weight: 800;
-        font-size: 120px;
-    }
-    
-    #progressbar {
-        background-color: #20201F;
-        border-radius: 10px;
-        padding: 4px;
-        height: 15%;
-    }
-    
-    #progressbar>div {
-        background-color: #F7901E;
-        width: 0%;
-        height: 100%;
-        border-radius: 10px;
-    }
-    </style>
-    <nav class="navbar navbar-dark bg-dark">
-        <button type="button" class="btn btn-secondary" onclick="stopPomo()">Stop</button>
-        <button type="button" class="btn btn-secondary" onclick="startOrResume()">Start</button>
-        <button type="button" class="btn btn-secondary" onclick="pausePomo()">Pause</button>
-    </nav>
 
-    <div class="container">
-        <p id="timeDisplay" style="text-align: center" class="timedisplay"></p>
 
-    </div>
+<nav class="navbar navbar-dark bg-dark">
+    <button type="button" class="btn btn-secondary" onclick="stopPomo()">Stop</button>
+    <button type="button" class="btn btn-secondary" onclick="startOrResume()">Start</button>
+    <button type="button" class="btn btn-secondary" onclick="pausePomo()">Pause</button>
+</nav>
 
-    <div id="progressbar">
-        <div id="progressbarstatus"></div>
-    </div>
+<div class="container">
+    <p id="timeDisplay" style="text-align: center" class="timedisplay"></p>
+    <h3 style="text-align: center;" id="infoText"></h3>
+</div>
 
-    <p>Pomodoro count: </p>
-    <p id="pomoCountHTML"></p>
+<div id="progressbar" class="progressbar">
+    <div id="progressbarstatus" class="progressbarinter"></div>
+</div>
 
-    <script src="js/pomodoro.js"></script>
+
+<script src="js/pomodoro.js"></script>
+
 </body>
-
-</html>
+</html> 
