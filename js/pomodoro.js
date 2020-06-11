@@ -11,15 +11,18 @@ let isCounting = false;
 let isResting = false;
 
 displayTimer(0);
+resetButtonElem = document.getElementById("resetButton");
 var alertAudio = new Audio('sfx/bell.mp3');
 
 
 function startOrResume() {
     isCounting = true;
+    resetButtonElem.disabled = true;
 }
 
 function pausePomo() {
     isCounting = false;
+    resetButtonElem.disabled = false;
 }
 
 function resetPomo() {
