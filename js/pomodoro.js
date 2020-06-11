@@ -6,18 +6,12 @@ let shortRestTime = 5 * 60;
 let focusTime = 25 * 60;
 let pomosBeforeLongRest = 4;
 let currTime = 0;
+const pollInterval = 300
 
 // status variables
 let isLongResting = false;
 let isCounting = false;
 let isResting = false;
-
-// timestamp varibles
-let pauseTimeStamp  = Date.now();
-let resumeTimeStamp = Date.now();
-let timeDiff = Date.now();
-
-
 
 displayTimer(0);
 resetButtonElem = document.getElementById("resetButton");
@@ -57,12 +51,23 @@ document.body.onkeyup = function(e){
     }
 }
 
+let timeAccumulator = 0;
+let prevIterTS = Date.now();
 var timeCounter = setInterval(function() {
+    let iterStartTS = Date.now();
     if (isCounting) {
-        currTime = currTime + 1;
-        advanceTimeStep();
+        timeAccumulator += iterStartTS - prevIterTS
+        let lostSeconds = Math.floor(timeAccumulator/1000)
+        for(i=0;i<lostSeconds;i++){
+            currTime = currTime + 1;
+            advanceTimeStep();
+            timeAccumulator -= 1000;
+        }
     }
-}, 1000);
+
+    prevIterTS = Date.now();
+
+}, pollInterval);
 
 function advanceTimeStep(){
     if (isResting) {
