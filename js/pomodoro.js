@@ -30,6 +30,21 @@ function stopPomo() {
     }
 }
 
+function togglePause(){
+    if (isCounting) {
+        pausePomo();
+    } else {
+        startOrResume();
+    }
+}
+
+// catpure space bar to pause
+document.body.onkeyup = function(e){
+    if(e.keyCode == 32 || e.key === 'Spacebar' || e.key === ' '){
+        togglePause();
+    }
+}
+
 var timeCounter = setInterval(function() {
     if (isCounting) {
         currTime = currTime + 1;
