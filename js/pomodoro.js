@@ -7,6 +7,8 @@ let focusTime = 25 * 60;
 let pomosBeforeLongRest = 4;
 let currTime = 0;
 
+// status variables
+let isLongResting = false;
 let isCounting = false;
 let isResting = false;
 
@@ -55,10 +57,11 @@ var timeCounter = setInterval(function() {
 
         if (isResting) {
             // check if is on long rest
-            if (pomoCount != 0 && (pomoCount % pomosBeforeLongRest == 0)) {
+            if (pomoCount != 0 && isLongResting) {
                 if (currTime >= longRestTime) {
                     currTime = 0;
                     isResting = false;
+                    isLongResting = false;
                     pomoCount = 0;
                     alertAudio.play();
                 }
@@ -75,6 +78,10 @@ var timeCounter = setInterval(function() {
                 currTime = 0;
                 isResting = true;
                 pomoCount = pomoCount + 1;
+
+                if (pomoCount % pomosBeforeLongRest == 0) {
+                    isLongResting = true;
+                }
                 alertAudio.play();
             }
 
