@@ -22,7 +22,7 @@ function pausePomo() {
     isCounting = false;
 }
 
-function stopPomo() {
+function resetPomo() {
     if (!isCounting) {
         pomoCount = 0;
         currTime = 0;
