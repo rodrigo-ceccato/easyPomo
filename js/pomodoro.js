@@ -12,6 +12,12 @@ let isLongResting = false;
 let isCounting = false;
 let isResting = false;
 
+// timestamp varibles
+let pauseTimeStamp  = Date.now();
+let resumeTimeStamp = Date.now();
+let timeDiff = Date.now();
+
+
 
 displayTimer(0);
 resetButtonElem = document.getElementById("resetButton");
@@ -54,43 +60,45 @@ document.body.onkeyup = function(e){
 var timeCounter = setInterval(function() {
     if (isCounting) {
         currTime = currTime + 1;
-
-        if (isResting) {
-            // check if is on long rest
-            if (pomoCount != 0 && isLongResting) {
-                if (currTime >= longRestTime) {
-                    currTime = 0;
-                    isResting = false;
-                    isLongResting = false;
-                    pomoCount = 0;
-                    alertAudio.play();
-                }
-            } else { // if on short rest
-                if (currTime >= shortRestTime) {
-                    currTime = 0;
-                    isResting = false;
-                    alertAudio.play();
-                }
-            }
-
-        } else { // if not on res
-            if (currTime >= focusTime) {
-                currTime = 0;
-                isResting = true;
-                pomoCount = pomoCount + 1;
-
-                if (pomoCount % pomosBeforeLongRest == 0) {
-                    isLongResting = true;
-                }
-                alertAudio.play();
-            }
-
-        }
-
-        displayTimer(currTime)
+        advanceTimeStep();
     }
 }, 1000);
 
+function advanceTimeStep(){
+    if (isResting) {
+        // check if is on long rest
+        if (pomoCount != 0 && isLongResting) {
+            if (currTime >= longRestTime) {
+                currTime = 0;
+                isResting = false;
+                isLongResting = false;
+                pomoCount = 0;
+                alertAudio.play();
+            }
+        } else { // if on short rest
+            if (currTime >= shortRestTime) {
+                currTime = 0;
+                isResting = false;
+                alertAudio.play();
+            }
+        }
+
+    } else { // if not on res
+        if (currTime >= focusTime) {
+            currTime = 0;
+            isResting = true;
+            pomoCount = pomoCount + 1;
+
+            if (pomoCount % pomosBeforeLongRest == 0) {
+                isLongResting = true;
+            }
+            alertAudio.play();
+        }
+
+    }
+
+    displayTimer(currTime)
+}
 
 function secondsToString(timeValue) {
     let minutes = Math.floor(timeValue / 60);
