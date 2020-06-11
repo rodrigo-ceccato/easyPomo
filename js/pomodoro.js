@@ -124,10 +124,15 @@ function displayTimer(timeValue) {
         progressBar.style.backgroundColor = '#696969';
         progress = (timeValue / focusTime) * 100;
     } else {
-        timeValueString = secondsToString(shortRestTime-timeValue);
+        if (isLongResting) {
+            timeValueString = secondsToString(longRestTime-timeValue)
+            progress = 100 - (timeValue / longRestTime) * 100;
+        } else {
+            timeValueString = secondsToString(shortRestTime-timeValue);
+            progress = 100 - (timeValue / shortRestTime) * 100;
+        }
         infoText = "Resting"
         progressBar.style.backgroundColor = '#8FBC8F';
-        progress = 100 - (timeValue / shortRestTime) * 100;
 
     }
     let formatedProgress = "" + progress + "%"
