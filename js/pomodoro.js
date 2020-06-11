@@ -10,6 +10,7 @@ let currTime = 0;
 let isCounting = false;
 let isResting = false;
 
+
 displayTimer(0);
 resetButtonElem = document.getElementById("resetButton");
 var alertAudio = new Audio('sfx/bell.mp3');
@@ -106,7 +107,7 @@ function secondsToString(timeValue) {
 
 function displayTimer(timeValue) {
     let infoText = ""
-    
+
     // update progress bar
     let progress = 0;
     let progressBar = document.getElementById("progressbarstatus")
@@ -125,7 +126,7 @@ function displayTimer(timeValue) {
     let formatedProgress = "" + progress + "%"
     progressBar.style.width = formatedProgress;
 
-    
+
     document.getElementById("infoText").innerHTML = infoText;
     document.getElementById("timeDisplay").innerHTML = timeValueString;
 
