@@ -14,14 +14,29 @@ let isCounting = false;
 let isResting = false;
 
 // interface variables
-let showSettings = true;
+let showSettings = false;
+settingsPanel.style.display = "none";
 
 displayTimer(0);
+
+//buttons elements
 resetButtonElem = document.getElementById("resetButton");
 settiButtonElem = document.getElementById("settingsButton");
-settiPanelElem   = document.getElementById("settingsPanel");
-var alertAudio = new Audio('sfx/bell.mp3');
 
+//configuration elements
+settiPanelElem    = document.getElementById("settingsPanel");
+formFocusTimeElem = document.getElementById("focusDuration");
+formShortRestElem = document.getElementById("shortRest");
+formLongRestElem  = document.getElementById("longRest");
+formPomosBLRElem  = document.getElementById("pomosPerSession");
+
+//set values on forms from saved settings
+formFocusTimeElem.value = focusTime/60;
+formShortRestElem.value = shortRestTime/60;
+formLongRestElem.value  = longRestTime/60;
+formPomosBLRElem.value  = pomosBeforeLongRest;
+
+var alertAudio = new Audio('sfx/bell.mp3');
 
 function startOrResume() {
     isCounting = true;
@@ -39,6 +54,16 @@ function resetPomo() {
         currTime = 0;
         displayTimer(currTime)
     }
+}
+
+function settingsChanged(){
+    longRestTime = 60 * formLongRestElem.value;
+    shortRestTime = 60 * formShortRestElem.value;
+    focusTime = 60 * formFocusTimeElem.value;
+    pomosBeforeLongRest = formPomosBLRElem.value;
+
+    // update displayed info
+    displayTimer(currTime)
 }
 
 function togglePause(){
