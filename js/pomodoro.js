@@ -13,8 +13,13 @@ let isLongResting = false;
 let isCounting = false;
 let isResting = false;
 
+// interface variables
+let showSettings = true;
+
 displayTimer(0);
 resetButtonElem = document.getElementById("resetButton");
+settiButtonElem = document.getElementById("settingsButton");
+settiPanelElem   = document.getElementById("settingsPanel");
 var alertAudio = new Audio('sfx/bell.mp3');
 
 
@@ -41,6 +46,16 @@ function togglePause(){
         pausePomo();
     } else {
         startOrResume();
+    }
+}
+
+function toggleSettings(){
+    if (showSettings) {
+        settingsPanel.style.display = "none";
+        showSettings = false;
+    } else {
+        settingsPanel.style.display = "block";
+        showSettings = true;
     }
 }
 

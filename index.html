@@ -15,7 +15,10 @@
 
 
 <nav class="navbar navbar-dark bg-dark">
-    <button type="button" class="btn btn-secondary" onclick="resetPomo()" id="resetButton">Reset</button>
+    <div>
+      <button type="button" class="btn btn-secondary" onclick="resetPomo()" id="resetButton">Reset</button>
+      <button type="button" class="btn btn-secondary" onclick="toggleSettings()" id="settingsButton">Settings</button>
+    </div>
     <button type="button" class="btn btn-secondary" onclick="startOrResume()" id="resumeButton">Start</button>
     <button type="button" class="btn btn-secondary" onclick="pausePomo()" id="pauseButton">Pause</button>
 </nav>
@@ -29,6 +32,14 @@
     <div id="progressbarstatus" class="progressbarinter"></div>
 </div>
 
+
+<div id="settingsPanel">
+<footer class="footer mt-auto py-3">
+  <div class="container">
+    <p>SETTINGS PANEL</p>
+  </div>
+</footer>
+</div>
 
 <script src="js/pomodoro.js"></script>
 
