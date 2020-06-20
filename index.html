@@ -34,22 +34,29 @@
 
 
 <div id="settingsPanel">
+<div  class="settingspanel">
 <footer class="footer mt-auto py-3">
   <div class="container">
     <h2>Settings</h2>
-    <label for="focusDuration">Focus time (minutes)</label>
-    <input id="focusDuration" class="form-control" type="number" min="1"  onkeyup="settingsChanged()" onchange="settingsChanged()" >
-
-    <label for="shortRest">Short rest (minutes)</label>
-    <input id="shortRest" class="form-control" type="number" min="1"  onkeyup="settingsChanged()" onchange="settingsChanged()" >
-
-    <label for="longRest">Long rest (minutes)</label>
-    <input id="longRest" class="form-control" type="number" min="1"  onkeyup="settingsChanged()" onchange="settingsChanged()" >
-
-    <label for="pomosPerSession">Pomos per session(#)</label>
-    <input id="pomosPerSession" class="form-control" type="number" min="1"  onkeyup="settingsChanged()" onchange="settingsChanged()" >
+    <div class="row">
+      <div class="column">
+      <label for="focusDuration">Focus time (minutes)</label>
+      <input id="focusDuration" class="form-control" type="number" min="1"  onkeyup="settingsChanged()" onchange="settingsChanged()" >
+      
+      <label for="shortRest">Short rest (minutes)</label>
+      <input id="shortRest" class="form-control" type="number" min="1"  onkeyup="settingsChanged()" onchange="settingsChanged()" >
+      </div>
+      <div class="column">
+      <label for="longRest">Long rest (minutes)</label>
+      <input id="longRest" class="form-control" type="number" min="1"  onkeyup="settingsChanged()" onchange="settingsChanged()" >
+      
+      <label for="pomosPerSession">Pomos per session(#)</label>
+      <input id="pomosPerSession" class="form-control" type="number" min="1"  onkeyup="settingsChanged()" onchange="settingsChanged()" >
+      </div>
+    </div> 
   </div>
 </footer>
+</div>
 </div>
 
 <script src="js/pomodoro.js"></script>

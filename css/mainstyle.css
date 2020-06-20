@@ -5,6 +5,11 @@
     margin-bottom: 0;
 }
 
+.settingspanel {
+    width: 50%;
+    margin: auto;
+}
+
 .progressbar {
     background-color: #20201F;
     border-radius: 10px;
@@ -21,3 +26,15 @@
     height: 100%;
     border-radius: 10px;
 }
+
+.column {
+  float: left;
+  width: 50%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+} 
