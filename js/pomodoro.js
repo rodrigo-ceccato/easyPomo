@@ -194,5 +194,10 @@ function displayTimer(timeValue) {
 
     document.getElementById("infoText").innerHTML = infoText;
     document.getElementById("timeDisplay").innerHTML = timeValueString;
+    if(isCounting) {
+        document.title = timeValueString;
+    } else {
+        document.title = "EasyPomo";
+    }
 
 }
