@@ -22,6 +22,8 @@ displayTimer(0);
 //buttons elements
 resetButtonElem = document.getElementById("resetButton");
 settiButtonElem = document.getElementById("settingsButton");
+resumeButtonElem = document.getElementById("resumeButton");
+pauseButtonElem = document.getElementById("pauseButton");
 
 //configuration elements
 settiPanelElem    = document.getElementById("settingsPanel");
@@ -41,18 +43,26 @@ var alertAudio = new Audio('sfx/bell.mp3');
 function startOrResume() {
     isCounting = true;
     resetButtonElem.disabled = true;
+    resumeButtonElem.disabled = true;
+    pauseButtonElem.disabled = false;
+    resumeButtonElem.style.display = "none";
 }
 
 function pausePomo() {
     isCounting = false;
     resetButtonElem.disabled = false;
+    resumeButtonElem.disabled = false;
+    pauseButtonElem.disabled = true;
+    resumeButtonElem.style.display = "block";
+    resumeButtonElem.innerHTML = "Resume";
 }
 
 function resetPomo() {
     if (!isCounting) {
         pomoCount = 0;
         currTime = 0;
-        displayTimer(currTime)
+        resumeButtonElem.innerHTML = "Start";
+        displayTimer(currTime);
     }
 }
 
