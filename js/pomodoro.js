@@ -1,10 +1,26 @@
 let pomoCount = 0;
 
+// load configuration from local storage
+let saveData = JSON.parse(localStorage.saveData || null) || {};
+console.log("Loaded saveData: ", saveData);
+
 // configuration values, in seconds
 let longRestTime = 15 * 60;
 let shortRestTime = 5 * 60;
 let focusTime = 25 * 60;
 let pomosBeforeLongRest = 4;
+
+// if defined, load saved configuration
+console.log("Loading saved data...");
+if('longRestTime' in saveData)
+    longRestTime = saveData.longRestTime;
+if('shortRestTime' in saveData)
+    shortRestTime = saveData.shortRestTime;
+if('focusTime' in saveData)
+    focusTime = saveData.focusTime;
+if('pomosBeforeLongRest' in saveData)
+    pomosBeforeLongRest = saveData.pomosBeforeLongRest;
+
 let currTime = 0;
 const pollInterval = 300
 
@@ -71,6 +87,15 @@ function settingsChanged(){
     shortRestTime = 60 * formShortRestElem.value;
     focusTime = 60 * formFocusTimeElem.value;
     pomosBeforeLongRest = formPomosBLRElem.value;
+
+    // save settings to local storage
+    saveData.longRestTime = longRestTime;
+    saveData.shortRestTime = shortRestTime;
+    saveData.focusTime = focusTime;
+    saveData.pomosBeforeLongRest = pomosBeforeLongRest;
+
+    localStorage.saveData = JSON.stringify(saveData);
+    console.log("Saving settings: ", saveData);
 
     // update displayed info
     displayTimer(currTime)
