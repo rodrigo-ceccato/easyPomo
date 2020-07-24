@@ -56,6 +56,10 @@ formPomosBLRElem.value  = pomosBeforeLongRest;
 
 var alertAudio = new Audio('sfx/bell.mp3');
 
+function testSound(){
+    alertAudio.play();
+}
+
 function startOrResume() {
     isCounting = true;
     resetButtonElem.disabled = true;
