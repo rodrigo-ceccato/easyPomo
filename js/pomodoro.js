@@ -81,6 +81,8 @@ function resetPomo() {
     if (!isCounting) {
         pomoCount = 0;
         currTime = 0;
+        isResting = false;
+        isLongResting = false;
         resumeButtonElem.innerHTML = "Start";
         displayTimer(currTime);
     }
