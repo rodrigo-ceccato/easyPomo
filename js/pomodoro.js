@@ -242,3 +242,7 @@ function displayTimer(timeValue) {
     }
 
 }
+
+$(".help-button").on("click", function() {
+    $(".help-button-wrapper").toggleClass("expanded");
+  });  
