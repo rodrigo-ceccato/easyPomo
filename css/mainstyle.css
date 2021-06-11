@@ -38,3 +38,64 @@
   display: table;
   clear: both;
 } 
+.help-button-wrapper {
+  position: relative;
+  text-align: center;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-10%);
+  transform: translateX(+10%);
+}
+.help-button {
+  height: 4em;
+  width: 4em;
+  font-size: 14px;
+  border-radius: 50%;
+  border: 0 none;
+  background: #7e18dd;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  transform: scale(1);
+  transition: all 200ms ease;
+}
+.help-button:hover,
+.help-button:focus,
+.help-button:active {
+  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+  outline: 0;
+}
+.help-button span {
+  display: block;
+  font-size: 2em;
+  transform: scale(1);
+  transition: transform 100ms ease;
+}
+.help-button:hover span,
+.expanded .help-button span,
+.expanded .help-button span {
+  transform: scale(1.25);
+}
+.expanded .help-button {
+  transform: scale(0.5);
+  color: rgba(255, 255, 255, 0.5);
+  background: #ffaa00;
+}
+.help-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  transition: all 200ms ease;
+  transform: translate(0, 90px) scale(0.5);
+  transform-origin: bottom center;
+  opacity: 0;
+}
+.expanded .help-list {
+  transform: translate(0px, 20px) scale(1);
+  opacity: 1;
+}
+.help-list li {
+  margin-bottom: 1em;
+}
+.help-list a {
+  color: #212121;
+}
