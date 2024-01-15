@@ -10,6 +10,14 @@
     margin: auto;
 }
 
+#serverIPDIV {
+  font-family: monospace;
+  font-weight: 800;
+  font-size: 30px;
+  margin-bottom: 0;
+  display: none;
+}
+
 .progressbar {
     background-color: #20201F;
     border-radius: 10px;

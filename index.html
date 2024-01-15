@@ -1,78 +1,172 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" href="css/mainstyle.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" type="text/css" href="css/mainstyle.css" />
     <title>EasyPomo</title>
-</head>
-<body>
+  </head>
+  <body>
+    <nav class="navbar navbar-dark bg-dark">
+      <div>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          onclick="resetPomo()"
+          id="resetButton"
+        >
+          Reset
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          onclick="setOnlineMode()"
+          id="onlineModeButton"
+        >
+          Online
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          onclick="toggleSettings()"
+          id="settingsButton"
+        >
+          Settings
+        </button>
+      </div>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        onclick="startOrResume()"
+        id="resumeButton"
+      >
+        Start
+      </button>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        onclick="pausePomo()"
+        id="pauseButton"
+      >
+        Pause
+      </button>
+    </nav>
 
+    <div class="help-button-wrapper">
+      <ul class="help-list">
+        <li><span>Press Space bar for pause/play timer</span></li>
+      </ul>
 
-<nav class="navbar navbar-dark bg-dark">
-    <div>
-      <button type="button" class="btn btn-secondary" onclick="resetPomo()" id="resetButton">Reset</button>
-      <button type="button" class="btn btn-secondary" onclick="toggleSettings()" id="settingsButton">Settings</button>
+      <button class="help-button">
+        <span>?</span>
+      </button>
     </div>
-    <button type="button" class="btn btn-secondary" onclick="startOrResume()" id="resumeButton">Start</button>
-    <button type="button" class="btn btn-secondary" onclick="pausePomo()" id="pauseButton">Pause</button>
-</nav>
 
-<div class="help-button-wrapper">
-  <ul class="help-list">
-    <li><span>Press Space bar for pause/play timer</span>
-    </li>
-  </ul>
+    <div class="container">
+      <p id="timeDisplay" style="text-align: center" class="timedisplay"></p>
+      <h3 style="text-align: center" id="infoText"></h3>
+    </div>
 
-  <button class="help-button">
-    <span>?</span>
-  </button>
-</div>
+    <div id="progressbar" class="progressbar">
+      <div id="progressbarstatus" class="progressbarinter"></div>
+    </div>
 
-<div class="container">
-    <p id="timeDisplay" style="text-align: center" class="timedisplay"></p>
-    <h3 style="text-align: center;" id="infoText"></h3>
-</div>
+    <div id="settingsPanel">
+      <div class="settingspanel">
+        <footer class="footer mt-auto py-3">
+          <div class="container">
+            <h2>Settings</h2>
+            <div class="row">
+              <div class="column" id="serverIPDIV">
+                <label for="serverIP">Server endpoint</label>
+                <input
+                  id="serverIP"
+                  class="form-control"
+                  type="text"
+                  onkeyup="settingsChanged()"
+                  onchange="settingsChanged()"
+                />
+            </div>
+            <div class="row">
+              <div class="column">
+                <label for="focusDuration">Focus time (minutes)</label>
+                <input
+                  id="focusDuration"
+                  class="form-control"
+                  type="number"
+                  min="1"
+                  onkeyup="settingsChanged()"
+                  onchange="settingsChanged()"
+                />
 
-<div id="progressbar" class="progressbar">
-    <div id="progressbarstatus" class="progressbarinter"></div>
-</div>
+                <label for="shortRest">Short rest (minutes)</label>
+                <input
+                  id="shortRest"
+                  class="form-control"
+                  type="number"
+                  min="1"
+                  onkeyup="settingsChanged()"
+                  onchange="settingsChanged()"
+                />
 
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  onclick="testSound()"
+                  id="soundTestButton"
+                >
+                  Sound test
+                </button>
+              </div>
+              <div class="column">
+                <label for="longRest">Long rest (minutes)</label>
+                <input
+                  id="longRest"
+                  class="form-control"
+                  type="number"
+                  min="1"
+                  onkeyup="settingsChanged()"
+                  onchange="settingsChanged()"
+                />
 
-<div id="settingsPanel">
-<div  class="settingspanel">
-<footer class="footer mt-auto py-3">
-  <div class="container">
-    <h2>Settings</h2>
-    <div class="row">
-      <div class="column">
-      <label for="focusDuration">Focus time (minutes)</label>
-      <input id="focusDuration" class="form-control" type="number" min="1"  onkeyup="settingsChanged()" onchange="settingsChanged()" >
-      
-      <label for="shortRest">Short rest (minutes)</label>
-      <input id="shortRest" class="form-control" type="number" min="1"  onkeyup="settingsChanged()" onchange="settingsChanged()" >
-
-      <button type="button" class="btn btn-secondary" onclick="testSound()" id="soundTestButton">Sound test</button>
+                <label for="pomosPerSession">Pomos per session(#)</label>
+                <input
+                  id="pomosPerSession"
+                  class="form-control"
+                  type="number"
+                  min="1"
+                  onkeyup="settingsChanged()"
+                  onchange="settingsChanged()"
+                />
+              </div>
+            </div>
+          </div>
+        </footer>
       </div>
-      <div class="column">
-      <label for="longRest">Long rest (minutes)</label>
-      <input id="longRest" class="form-control" type="number" min="1"  onkeyup="settingsChanged()" onchange="settingsChanged()" >
-      
-      <label for="pomosPerSession">Pomos per session(#)</label>
-      <input id="pomosPerSession" class="form-control" type="number" min="1"  onkeyup="settingsChanged()" onchange="settingsChanged()" >
-      </div>
-    </div> 
-  </div>
-</footer>
-</div>
-</div>
+    </div>
 
-<script src="js/pomodoro.js"></script>
-
-</body>
-</html> 
+    <script src="js/pomodoro.js"></script>
+  </body>
+</html>

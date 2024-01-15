@@ -9,6 +9,7 @@ let longRestTime = 15 * 60;
 let shortRestTime = 5 * 60;
 let focusTime = 25 * 60;
 let pomosBeforeLongRest = 4;
+let onlineMode = false;
 
 // if defined, load saved configuration
 console.log("Loading saved data...");
@@ -20,9 +21,13 @@ if('focusTime' in saveData)
     focusTime = saveData.focusTime;
 if('pomosBeforeLongRest' in saveData)
     pomosBeforeLongRest = saveData.pomosBeforeLongRest;
+if('onlineIP' in saveData)
+    onlineIP = saveData.onlineIP;
 
 let currTime = 0;
 const pollInterval = 300
+const onlinePort = 35123
+let onlineIP = "localhost"
 
 // status variables
 let isLongResting = false;
@@ -40,6 +45,7 @@ resetButtonElem = document.getElementById("resetButton");
 settiButtonElem = document.getElementById("settingsButton");
 resumeButtonElem = document.getElementById("resumeButton");
 pauseButtonElem = document.getElementById("pauseButton");
+onlineModeButton = document.getElementById("onlineModeButton");
 
 //configuration elements
 settiPanelElem    = document.getElementById("settingsPanel");
@@ -47,17 +53,39 @@ formFocusTimeElem = document.getElementById("focusDuration");
 formShortRestElem = document.getElementById("shortRest");
 formLongRestElem  = document.getElementById("longRest");
 formPomosBLRElem  = document.getElementById("pomosPerSession");
+formServerIPDIVElem = document.getElementById("serverIPDIV");
+formServerIPElem = document.getElementById("serverIP");
 
 //set values on forms from saved settings
 formFocusTimeElem.value = focusTime/60;
 formShortRestElem.value = shortRestTime/60;
 formLongRestElem.value  = longRestTime/60;
 formPomosBLRElem.value  = pomosBeforeLongRest;
+formServerIPElem.value  = onlineIP;
 
 var alertAudio = new Audio('sfx/bell.mp3');
 
 function testSound(){
     alertAudio.play();
+}
+
+function setOnlineMode() {
+    // Remove offline mode buttons: reset, pause, resume, start
+    resumeButtonElem.style.display = "none";
+    pauseButtonElem.style.display = "none";
+    resetButtonElem.style.display = "none";
+    onlineModeButton.style.display = "none";
+
+    // Gray out settings form
+    formFocusTimeElem.disabled = true;
+    formShortRestElem.disabled = true;
+    formLongRestElem.disabled = true;
+    formPomosBLRElem.disabled = true;
+
+    formServerIPDIVElem.style.display = "block";
+
+    // Set online mode flag
+    onlineMode = true;
 }
 
 function startOrResume() {
@@ -93,12 +121,14 @@ function settingsChanged(){
     shortRestTime = 60 * formShortRestElem.value;
     focusTime = 60 * formFocusTimeElem.value;
     pomosBeforeLongRest = formPomosBLRElem.value;
+    onlineIP = formServerIPElem.value;
 
     // save settings to local storage
     saveData.longRestTime = longRestTime;
     saveData.shortRestTime = shortRestTime;
     saveData.focusTime = focusTime;
     saveData.pomosBeforeLongRest = pomosBeforeLongRest;
+    saveData.onlineIP = formServerIPElem.value;
 
     localStorage.saveData = JSON.stringify(saveData);
     console.log("Saving settings: ", saveData);
@@ -135,6 +165,7 @@ document.body.onkeyup = function(e){
 let timeAccumulator = 0;
 let prevIterTS = Date.now();
 var timeCounter = setInterval(function() {
+    if (onlineMode == false) {
     let iterStartTS = Date.now();
     if (isCounting) {
         timeAccumulator += iterStartTS - prevIterTS
@@ -147,8 +178,40 @@ var timeCounter = setInterval(function() {
     }
 
     prevIterTS = Date.now();
+    } else {
+        // If online mode is enabled, use the server JSON API to get the current pomodoro state
+        getOnlineStep();
+    }
 
 }, pollInterval);
+
+function getOnlineStep() {
+    console.log("Getting online step");
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', 'http://127.0.0.1:35123/json-endpoint');
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            let response = JSON.parse(xhr.responseText);
+            console.log(response);
+            if (response.isCounting) {
+                startOrResume();
+            } else {
+                pausePomo();
+            }
+            currTime = response.currTime;
+            pomoCount = response.pomoCount;
+            isResting = response.isResting;
+            isLongResting = response.isLongResting;
+            pomosBeforeLongRest = response.pomosBeforeLongRest;
+            displayTimer(currTime);
+        }
+        else {
+            console.log('Request failed.  Returned status of ' + xhr.status);
+        }
+    };
+    xhr.send();
+}
+
 
 function advanceTimeStep(){
     if (isResting) {
