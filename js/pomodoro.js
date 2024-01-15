@@ -188,7 +188,8 @@ var timeCounter = setInterval(function() {
 function getOnlineStep() {
     console.log("Getting online step");
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://127.0.0.1:35123/json-endpoint');
+    //xhr.open('GET', 'http://127.0.0.1:35123/json-endpoint');
+    xhr.open('GET', 'http://' + onlineIP + ':' + onlinePort + '/json-endpoint');
     xhr.onload = function() {
         if (xhr.status === 200) {
             let response = JSON.parse(xhr.responseText);
