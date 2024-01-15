@@ -10,6 +10,8 @@ let shortRestTime = 5 * 60;
 let focusTime = 25 * 60;
 let pomosBeforeLongRest = 4;
 let onlineMode = false;
+const onlinePort = 35123
+let onlineIP = "localhost"
 
 // if defined, load saved configuration
 console.log("Loading saved data...");
@@ -26,8 +28,6 @@ if('onlineIP' in saveData)
 
 let currTime = 0;
 const pollInterval = 300
-const onlinePort = 35123
-let onlineIP = "localhost"
 
 // status variables
 let isLongResting = false;
