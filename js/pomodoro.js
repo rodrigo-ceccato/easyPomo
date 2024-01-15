@@ -212,7 +212,6 @@ function getOnlineStep() {
     xhr.send();
 }
 
-
 function advanceTimeStep(){
     if (isResting) {
         // check if is on long rest
