@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const path = require("path")
 const app = express();
 
 const PORT = 35123;
@@ -51,7 +52,7 @@ app.post("/save-config", (req, res) => {
 });
 
 var timeCounter = setInterval(function () {
-  console.log("Computing step, currTime = " + currTime);
+  //console.log("Computing step, currTime = " + currTime);
   let iterStartTS = Date.now();
   if (isCounting) {
     timeAccumulator += iterStartTS - prevIterTS;
@@ -112,14 +113,23 @@ getPomoStateJSON = () => {
 
 // Define a route that serves the JSON
 app.get("/json-endpoint", cors(), (req, res) => {
-  console.log(
-    "Received request from: " + req.ip + " at " + new Date().toISOString()
-  );
-  console.log(getPomoStateJSON());
+    //console.log(
+    //"Received request from: " + req.ip + " at " + new Date().toISOString()
+    //);
+    //console.log(getPomoStateJSON());
   res.json(getPomoStateJSON());
 });
+
+// Start index.html server to avoid mixed content error
+app.use(express.static(path.join(__dirname, '.')));
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname));
+});
+
 
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+  console.log(`Server IP:${PORT}/config for configuration`);
+  console.log(`Server IP:${PORT}/ for usage`);
 });
