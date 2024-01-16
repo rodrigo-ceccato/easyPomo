@@ -43,6 +43,7 @@ app.post("/save-config", (req, res) => {
   // Save the configuration data as needed (replace this with your logic)
   // For demonstration purposes, we'll just log the received data
   console.log("Received configuration data");
+  console.log(req.body);
 
   // Send a response (you can customize this based on your needs)
   res.json({ success: true, message: "Configuration saved successfully" });

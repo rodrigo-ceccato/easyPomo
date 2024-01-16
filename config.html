@@ -39,6 +39,9 @@
     <label for="pomosBeforeLongRest">Pomos Before Long Rest:</label>
     <input type="number" id="pomosBeforeLongRest" name="pomosBeforeLongRest" required>
 
+    <label for="pomoCount">Current pomo:</label>
+    <input type="number" id="pomoCount" name="pomoCount" required>
+
     <label for="shortRestTime">Short Rest Time (minutes):</label>
     <input type="number" id="shortRestTime" name="shortRestTime" required>
 
@@ -46,7 +49,7 @@
     <input type="number" id="longRestTime" name="longRestTime" required>
 
     <label for="currTime">Current Time:</label>
-    <input type="text" id="currTime" name="currTime" required>
+    <input type="number" id="currTime" name="currTime" required>
 
     <label for="isResting">Is Resting:</label>
     <input type="checkbox" id="isResting" name="isResting">
@@ -65,11 +68,10 @@
       const pomosBeforeLongRest = document.getElementById('pomosBeforeLongRest').value;
       const shortRestTime = document.getElementById('shortRestTime').value;
       const longRestTime = document.getElementById('longRestTime').value;
-      const pomosPerSession = document.getElementById('pomosPerSession').value;
-      const currentPomo = document.getElementById('currentPomo').value;
       const currTime = document.getElementById('currTime').value;
       const isResting = document.getElementById('isResting').checked;
       const isLongResting = document.getElementById('isLongResting').checked;
+      const pomoCount= document.getElementById('pomoCount').value;
 
       // Example: Send the values to the server (you might want to use AJAX for this)
       fetch('/save-config', {
@@ -81,9 +83,8 @@
           pomosBeforeLongRest,
           shortRestTime,
           longRestTime,
-          pomosPerSession,
-          currentPomo,
           currTime,
+          pomoCount,
           isResting,
           isLongResting
         }),
