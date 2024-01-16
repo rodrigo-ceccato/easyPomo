@@ -36,16 +36,13 @@ app.post("/save-config", (req, res) => {
   pomoCount = Number(req.body.pomoCount);
   isResting = req.body.isResting == "true";
   isLongResting = req.body.isLongResting == "true";
+  shortRestTime = Number(req.body.shortRestTime);
+  longRestTime = Number(req.body.longRestTime);
+
 
   // Save the configuration data as needed (replace this with your logic)
   // For demonstration purposes, we'll just log the received data
-  console.log("Received configuration data:", {
-    pomosBeforeLongRest,
-    currTime,
-    pomoCount,
-    isResting,
-    isLongResting,
-  });
+  console.log("Received configuration data");
 
   // Send a response (you can customize this based on your needs)
   res.json({ success: true, message: "Configuration saved successfully" });

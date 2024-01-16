@@ -39,11 +39,14 @@
     <label for="pomosBeforeLongRest">Pomos Before Long Rest:</label>
     <input type="number" id="pomosBeforeLongRest" name="pomosBeforeLongRest" required>
 
+    <label for="shortRestTime">Short Rest Time (minutes):</label>
+    <input type="number" id="shortRestTime" name="shortRestTime" required>
+
+    <label for="longRestTime">Long Rest Time (minutes):</label>
+    <input type="number" id="longRestTime" name="longRestTime" required>
+
     <label for="currTime">Current Time:</label>
     <input type="text" id="currTime" name="currTime" required>
-
-    <label for="pomoCount">Pomo Count:</label>
-    <input type="number" id="pomoCount" name="pomoCount" required>
 
     <label for="isResting">Is Resting:</label>
     <input type="checkbox" id="isResting" name="isResting">
@@ -51,15 +54,20 @@
     <label for="isLongResting">Is Long Resting:</label>
     <input type="checkbox" id="isLongResting" name="isLongResting">
 
+   <br><br> 
     <button type="button" onclick="submitForm()">Save Configuration</button>
+
   </form>
 
   <script>
     function submitForm() {
       // Get values from the form
       const pomosBeforeLongRest = document.getElementById('pomosBeforeLongRest').value;
+      const shortRestTime = document.getElementById('shortRestTime').value;
+      const longRestTime = document.getElementById('longRestTime').value;
+      const pomosPerSession = document.getElementById('pomosPerSession').value;
+      const currentPomo = document.getElementById('currentPomo').value;
       const currTime = document.getElementById('currTime').value;
-      const pomoCount = document.getElementById('pomoCount').value;
       const isResting = document.getElementById('isResting').checked;
       const isLongResting = document.getElementById('isLongResting').checked;
 
@@ -71,8 +79,11 @@
         },
         body: JSON.stringify({
           pomosBeforeLongRest,
+          shortRestTime,
+          longRestTime,
+          pomosPerSession,
+          currentPomo,
           currTime,
-          pomoCount,
           isResting,
           isLongResting
         }),
