@@ -204,6 +204,7 @@ function getOnlineStep() {
             isResting = response.isResting;
             isLongResting = response.isLongResting;
             pomosBeforeLongRest = response.pomosBeforeLongRest;
+            isCounting = true; // Gambiarrator activate
             displayTimer(currTime);
         }
         else {
@@ -308,4 +309,4 @@ function displayTimer(timeValue) {
 
 $(".help-button").on("click", function() {
     $(".help-button-wrapper").toggleClass("expanded");
-  });  
+  });
