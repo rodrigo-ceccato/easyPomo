@@ -206,6 +206,15 @@ function getOnlineStep() {
             pomosBeforeLongRest = response.pomosBeforeLongRest;
             isCounting = true; // Gambiarrator activate
             displayTimer(currTime);
+
+            // set icons
+            if(!isResting && !isLongResting){
+                document.querySelector("link[rel='icon']").href = "images/work.ico";
+            } else if(isResting && !isLongResting) {
+                document.querySelector("link[rel='icon']").href = "images/small_break.ico";
+            } else{
+                document.querySelector("link[rel='icon']").href = "images/long_break.ico";
+            }
         }
         else {
             console.log('Request failed.  Returned status of ' + xhr.status);
