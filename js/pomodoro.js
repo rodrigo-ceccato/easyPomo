@@ -10,8 +10,10 @@ let shortRestTime = 5 * 60;
 let focusTime = 25 * 60;
 let pomosBeforeLongRest = 4;
 let onlineMode = false;
-const onlinePort = 35123
-let onlineIP = "localhost"
+const onlinePort = 443
+//let onlineIP = "localhost"
+//let onlineIP = window.location.hostname
+let onlineIP = "easypomo.duckdns.org"
 
 // if defined, load saved configuration
 console.log("Loading saved data...");
