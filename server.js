@@ -6,6 +6,15 @@ const app = express();
 
 const PORT = 35123;
 
+// Object to store IP addresses and timestamps
+const ipAddresses = {};
+
+// Function to track IP addresses and timestamps
+const trackIP = (ip) => {
+  ipAddresses[ip] = Date.now();
+};
+
+
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -111,12 +120,37 @@ getPomoStateJSON = () => {
 
 // Define a route that serves the JSON
 app.get("/json-endpoint", cors(), (req, res) => {
+  const ip = req.ip || req.connection.remoteAddress; // Get IP address
+  trackIP(ip); // Track IP
     //console.log(
     //"Received request from: " + req.ip + " at " + new Date().toISOString()
     //);
     //console.log(getPomoStateJSON());
   res.json(getPomoStateJSON());
 });
+
+// Endpoint to display the number of online users
+app.get('/online-users', (req, res) => {
+  // Call the function to count unique IPs in the last 5 seconds
+  const onlineUsersCount = countUniqueIPsInLast5Seconds();
+
+  // Respond to the request with the online users count
+  res.send(`Number of online users in the last 5 seconds: ${onlineUsersCount}`);
+});
+
+// Function to count unique IPs in the last 5 seconds
+const countUniqueIPsInLast5Seconds = () => {
+  const currentTime = Date.now();
+  const threshold = currentTime - 5000; // 5 seconds ago
+
+  const uniqueIPs = Object.keys(ipAddresses).filter(
+    (ip) => ipAddresses[ip] >= threshold
+  );
+
+  console.log('Number of unique IPs in the last 5 seconds:', uniqueIPs.length);
+
+  return uniqueIPs.length;
+};
 
 // Start index.html server to avoid mixed content error
 app.use(express.static(path.join(__dirname, '.')));
