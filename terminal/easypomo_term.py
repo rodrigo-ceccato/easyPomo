@@ -17,14 +17,19 @@ def get_online_step():
         curr_time = data["currTime"]
         is_resting = data["isResting"]
         is_long_resting = data["isLongResting"]
+        pomos_before_long_rest = data["pomosBeforeLongRest"]
 
         # Format currTime as MM:SS with leading zeros
         minutes, seconds = divmod(curr_time, 60)
         formatted_time = f'{int(minutes):02d}:{int(seconds):02d}'
 
-        status_icon = "⌛" if not is_resting else "☕" if is_long_resting else "☕"
+        status_icon = "⌛" if not is_resting else "🚬" if is_long_resting else "🚬☕"
 
-        print(f'{pomo_count+1}{status_icon} {formatted_time}')
+        status_string = f'{pomo_count+1}{status_icon} {formatted_time}' 
+        if is_long_resting:
+            status_string = f'{status_icon} {formatted_time}' 
+
+        print(status_string)
 
     except requests.exceptions.RequestException as e:
         print(f'EasyPomo failed')
