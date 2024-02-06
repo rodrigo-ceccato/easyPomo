@@ -18,18 +18,16 @@ def get_online_step():
         is_resting = data["isResting"]
         is_long_resting = data["isLongResting"]
 
-        # Format currTime as MM:SS
-        formatted_time = str(timedelta(seconds=curr_time)).lstrip("0:")  # Removing leading zeros and the hour field
-                # Check if less than 1 minute, then format as 00:SS
-        if curr_time < 60:
-            formatted_time = f"00:{formatted_time}"
+        # Format currTime as MM:SS with leading zeros
+        minutes, seconds = divmod(curr_time, 60)
+        formatted_time = f'{int(minutes):02d}:{int(seconds):02d}'
 
         status_icon = "⌛" if not is_resting else "☕" if is_long_resting else "☕"
 
         print(f'{pomo_count+1}{status_icon} {formatted_time}')
 
     except requests.exceptions.RequestException as e:
-        print(f'Request failed. Exception: {e}')
+        print(f'EasyPomo failed')
 
 #while True:
 #    get_online_step()
