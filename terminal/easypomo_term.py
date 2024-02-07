@@ -23,9 +23,13 @@ def get_online_step():
         minutes, seconds = divmod(curr_time, 60)
         formatted_time = f'{int(minutes):02d}:{int(seconds):02d}'
 
-        status_icon = "⌛" if not is_resting else "🚬" if is_long_resting else "🚬☕"
+        status_icon = "⌛" if not is_resting else "🚬☕" if is_long_resting else "☕"
+
+        if is_long_resting or is_resting:
+            pomo_count = pomo_count - 1
 
         status_string = f'{pomo_count+1}{status_icon} {formatted_time}' 
+
         if is_long_resting:
             status_string = f'{status_icon} {formatted_time}' 
 
