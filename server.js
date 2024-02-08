@@ -11,6 +11,10 @@ const ipAddresses = {};
 
 // Function to track IP addresses and timestamps
 const trackIP = (ip) => {
+  const ip = (req.headers['x-forwarded-for'] || '').split(',').pop().trim() || 
+         req.connection.remoteAddress || 
+         req.socket.remoteAddress || 
+         req.connection.socket.remoteAddress;
   ipAddresses[ip] = Date.now();
 };
 
@@ -122,10 +126,6 @@ getPomoStateJSON = () => {
 app.get("/json-endpoint", cors(), (req, res) => {
   const ip = req.ip || req.connection.remoteAddress; // Get IP address
   trackIP(ip); // Track IP
-    //console.log(
-    //"Received request from: " + req.ip + " at " + new Date().toISOString()
-    //);
-    //console.log(getPomoStateJSON());
   res.json(getPomoStateJSON());
 });
 
