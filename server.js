@@ -10,7 +10,7 @@ const PORT = 35123;
 const ipAddresses = {};
 
 // Function to track IP addresses and timestamps
-const trackIP = (ip) => {
+const trackIP = (req) => {
   const ip = (req.headers['x-forwarded-for'] || '').split(',').pop().trim() || 
          req.connection.remoteAddress || 
          req.socket.remoteAddress || 
@@ -127,8 +127,7 @@ getPomoStateJSON = () => {
 
 // Define a route that serves the JSON
 app.get("/json-endpoint", cors(), (req, res) => {
-  const ip = req.ip || req.connection.remoteAddress; // Get IP address
-  trackIP(ip); // Track IP
+  trackIP(req); // Track IP
   res.json(getPomoStateJSON());
 });
 
