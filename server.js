@@ -118,6 +118,9 @@ getPomoStateJSON = () => {
     pomoCount: pomoCount,
     isResting: isResting,
     isLongResting: isLongResting,
+    focusTime: focusTime,
+    shortRestTime: shortRestTime,
+    longRestTime: longRestTime,
     timestamp: new Date().toISOString(),
   };
 };

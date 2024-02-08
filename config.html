@@ -44,6 +44,9 @@
     <label for="pomoCount">Current pomo:</label>
     <input type="number" id="pomoCount" name="pomoCount" required>
 
+    <label for="pomoTime">Pomo Time (seconds):</label>
+    <input type="number" id="focusTime" name="focusTime" required>
+
     <label for="shortRestTime">Short Rest Time (seconds):</label>
     <input type="number" id="shortRestTime" name="shortRestTime" required>
 
@@ -72,6 +75,7 @@
         document.getElementById('pomosBeforeLongRest').value = data.pomosBeforeLongRest;
         document.getElementById('shortRestTime').value = data.shortRestTime;
         document.getElementById('longRestTime').value = data.longRestTime;
+        document.getElementById('focusTime').value = data.focusTime;
         document.getElementById('currTime').value = data.currTime;
         document.getElementById('isResting').checked = data.isResting;
         document.getElementById('isLongResting').checked = data.isLongResting;
@@ -86,11 +90,12 @@
       const shortRestTime = document.getElementById('shortRestTime').value;
       const longRestTime = document.getElementById('longRestTime').value;
       const currTime = document.getElementById('currTime').value;
+      const focusTime = document.getElementById('focusTime').value;
       const isResting = document.getElementById('isResting').checked;
       const isLongResting = document.getElementById('isLongResting').checked;
       const pomoCount = document.getElementById('pomoCount').value;
 
-      // Example: Send the values to the server (you might want to use AJAX for this)
+      // Send the values to the server (you might want to use AJAX for this)
       fetch('/save-config', {
         method: 'POST',
         headers: {
@@ -101,6 +106,7 @@
           shortRestTime,
           longRestTime,
           currTime,
+          focusTime,
           pomoCount,
           isResting,
           isLongResting
