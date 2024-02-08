@@ -65,7 +65,7 @@ formLongRestElem.value  = longRestTime/60;
 formPomosBLRElem.value  = pomosBeforeLongRest;
 formServerIPElem.value  = onlineIP;
 
-var alertAudio = new Audio('sfx/bell.mp3');
+var alertAudio = new Audio('sfx/nossa.mp3');
 
 function testSound(){
     alertAudio.play();
@@ -201,6 +201,12 @@ function getOnlineStep() {
             } else {
                 pausePomo();
             }
+
+            // if isResting or is isLongResting changed state, play sound
+            if (isResting != response.isResting || isLongResting != response.isLongResting) {
+                alertAudio.play();
+            }
+
             currTime = response.currTime;
             pomoCount = response.pomoCount;
             isResting = response.isResting;
@@ -217,6 +223,7 @@ function getOnlineStep() {
             } else{
                 document.querySelector("link[rel='icon']").href = "images/long_break.ico";
             }
+
         }
         else {
             console.log('Request failed.  Returned status of ' + xhr.status);
