@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,6 +34,7 @@
     }
   </style>
 </head>
+
 <body>
   <h1>Configuration Page</h1>
   <form id="configForm">
@@ -57,12 +59,27 @@
     <label for="isLongResting">Is Long Resting:</label>
     <input type="checkbox" id="isLongResting" name="isLongResting">
 
-   <br><br> 
+    <br><br>
     <button type="button" onclick="submitForm()">Save Configuration</button>
 
   </form>
 
   <script>
+    // On load, set config page values to values on /json-endpoint
+    fetch('/json-endpoint')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('pomosBeforeLongRest').value = data.pomosBeforeLongRest;
+        document.getElementById('shortRestTime').value = data.shortRestTime;
+        document.getElementById('longRestTime').value = data.longRestTime;
+        document.getElementById('currTime').value = data.currTime;
+        document.getElementById('isResting').checked = data.isResting;
+        document.getElementById('isLongResting').checked = data.isLongResting;
+        document.getElementById('pomoCount').value = data.pomoCount;
+      })
+      .catch(error => {
+        console.error('Error fetching config:', error);
+      });
     function submitForm() {
       // Get values from the form
       const pomosBeforeLongRest = document.getElementById('pomosBeforeLongRest').value;
@@ -71,7 +88,7 @@
       const currTime = document.getElementById('currTime').value;
       const isResting = document.getElementById('isResting').checked;
       const isLongResting = document.getElementById('isLongResting').checked;
-      const pomoCount= document.getElementById('pomoCount').value;
+      const pomoCount = document.getElementById('pomoCount').value;
 
       // Example: Send the values to the server (you might want to use AJAX for this)
       fetch('/save-config', {
@@ -89,14 +106,15 @@
           isLongResting
         }),
       })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Config saved:', data);
-      })
-      .catch(error => {
-        console.error('Error saving config:', error);
-      });
+        .then(response => response.json())
+        .then(data => {
+          console.log('Config saved:', data);
+        })
+        .catch(error => {
+          console.error('Error saving config:', error);
+        });
     }
   </script>
 </body>
+
 </html>
