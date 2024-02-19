@@ -9,7 +9,8 @@ def get_online_step():
     url = 'https://easypomo.duckdns.org:443/json-endpoint'
     
     try:
-        response = requests.get(url)
+        # Set the timeout parameter to 5 seconds
+        response = requests.get(url, timeout=5)
         response.raise_for_status()  # Raise an HTTPError for bad responses
         data = response.json()
 
@@ -35,6 +36,9 @@ def get_online_step():
 
         print(status_string)
 
+    except requests.exceptions.Timeout:
+        # Print an emoji indicating the network is not reachable
+        print("📡❌")
     except requests.exceptions.RequestException as e:
         print(f'EasyPomo failed')
 
