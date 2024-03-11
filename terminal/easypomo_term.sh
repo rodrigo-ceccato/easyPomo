@@ -16,21 +16,28 @@ get_online_step() {
     is_resting=$(echo "$response" | jq '.isResting')
     is_long_resting=$(echo "$response" | jq '.isLongResting')
     pomos_before_long_rest=$(echo "$response" | jq '.pomosBeforeLongRest')
+    short_rest_time=$(echo "$response" | jq '.shortRestTime')
+    long_rest_time=$(echo "$response" | jq '.longRestTime')
 
-    # Format currTime as MM:SS with leading zeros
-    minutes=$((curr_time / 60))
-    seconds=$((curr_time % 60))
-    formatted_time=$(printf '%02d:%02d' $minutes $seconds)
-
+    # Determine remaining time for the current phase
     if [[ $is_resting == "true" ]]; then
         if [[ $is_long_resting == "true" ]]; then
+            remaining_time=$((long_rest_time - curr_time))
             status_icon="🚬☕"
         else
+            remaining_time=$((short_rest_time - curr_time))
             status_icon="☕"
         fi
     else
+        # For focus time, this logic remains unchanged
+        remaining_time=$curr_time
         status_icon="⌛"
     fi
+
+    # Format remaining_time as MM:SS with leading zeros
+    minutes=$((remaining_time / 60))
+    seconds=$((remaining_time % 60))
+    formatted_time=$(printf '%02d:%02d' $minutes $seconds)
 
     # Increment pomo_count by 1 for display
     display_pomo_count=$((pomo_count + 1))
@@ -46,4 +53,3 @@ get_online_step() {
 
 # Call the function
 get_online_step
-
