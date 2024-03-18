@@ -39,8 +39,13 @@ get_online_step() {
     seconds=$((remaining_time % 60))
     formatted_time=$(printf '%02d:%02d' $minutes $seconds)
 
-    # Increment pomo_count by 1 for display
-    display_pomo_count=$((pomo_count + 1))
+    # If is not resting, and not long resting, increment pomo_count by 1
+    if [[ $is_resting == "false" ]] && [[ $is_long_resting == "false" ]]; then
+        display_pomo_count=$((pomo_count + 1))
+    else
+        display_pomo_count=$pomo_count
+    fi
+
 
     status_string="${display_pomo_count}${status_icon} ${formatted_time}"
 
