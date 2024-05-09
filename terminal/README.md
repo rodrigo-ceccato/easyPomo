@@ -3,7 +3,7 @@ Example of i3-status-rust config:
 ```
 [[block]]
 block = "custom"
-cycle = ["echo 🤫","easyPomo/terminal/easypomo_term.py"]
+cycle = ["echo 🤫","easyPomo/terminal/easypomo_term.sh"]
 interval = 1
 ```
 
