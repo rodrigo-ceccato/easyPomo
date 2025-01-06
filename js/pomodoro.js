@@ -65,7 +65,7 @@ formLongRestElem.value  = longRestTime/60;
 formPomosBLRElem.value  = pomosBeforeLongRest;
 formServerIPElem.value  = onlineIP;
 
-var alertAudio = new Audio('sfx/nossa.mp3');
+var alertAudio = new Audio('sfx/bell.mp3');
 
 function testSound(){
     alertAudio.play();
