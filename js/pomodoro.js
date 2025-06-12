@@ -36,36 +36,75 @@ let isLongResting = false;
 let isCounting = false;
 let isResting = false;
 
+// DOM element placeholders for test environment
+let settingsPanel;
+let resetButtonElem;
+let settiButtonElem;
+let resumeButtonElem;
+let pauseButtonElem;
+let onlineModeButton;
+let settiPanelElem;
+let formFocusTimeElem;
+let formShortRestElem;
+let formLongRestElem;
+let formPomosBLRElem;
+let formServerIPDIVElem;
+let formServerIPElem;
+
+// load runtime state from localStorage for offline mode
+const snapshotInterval = 5000;
+let savedState = JSON.parse(localStorage.pomoState || null) || null;
+if (savedState && !onlineMode) {
+    currTime = savedState.currTime || 0;
+    pomoCount = savedState.pomoCount || 0;
+    isResting = savedState.isResting || false;
+    isLongResting = savedState.isLongResting || false;
+    isCounting = savedState.isCounting || false;
+
+    if (savedState.timestamp && isCounting) {
+        let lostSeconds = Math.floor((Date.now() - savedState.timestamp)/1000);
+        for(let i=0;i<lostSeconds;i++){
+            currTime = currTime + 1;
+            advanceTimeStep();
+        }
+    }
+}
+
 // interface variables
 let showSettings = false;
-settingsPanel.style.display = "none";
+var alertAudio = { play: function(){} };
 
-displayTimer(0);
+if (typeof window !== 'undefined') {
+    settingsPanel = document.getElementById("settingsPanel");
+    settingsPanel.style.display = "none";
 
-//buttons elements
-resetButtonElem = document.getElementById("resetButton");
-settiButtonElem = document.getElementById("settingsButton");
-resumeButtonElem = document.getElementById("resumeButton");
-pauseButtonElem = document.getElementById("pauseButton");
-onlineModeButton = document.getElementById("onlineModeButton");
+    displayTimer(currTime);
 
-//configuration elements
-settiPanelElem    = document.getElementById("settingsPanel");
-formFocusTimeElem = document.getElementById("focusDuration");
-formShortRestElem = document.getElementById("shortRest");
-formLongRestElem  = document.getElementById("longRest");
-formPomosBLRElem  = document.getElementById("pomosPerSession");
-formServerIPDIVElem = document.getElementById("serverIPDIV");
-formServerIPElem = document.getElementById("serverIP");
+    //buttons elements
+    resetButtonElem = document.getElementById("resetButton");
+    settiButtonElem = document.getElementById("settingsButton");
+    resumeButtonElem = document.getElementById("resumeButton");
+    pauseButtonElem = document.getElementById("pauseButton");
+    onlineModeButton = document.getElementById("onlineModeButton");
 
-//set values on forms from saved settings
-formFocusTimeElem.value = focusTime/60;
-formShortRestElem.value = shortRestTime/60;
-formLongRestElem.value  = longRestTime/60;
-formPomosBLRElem.value  = pomosBeforeLongRest;
-formServerIPElem.value  = onlineIP;
+    //configuration elements
+    settiPanelElem    = document.getElementById("settingsPanel");
+    formFocusTimeElem = document.getElementById("focusDuration");
+    formShortRestElem = document.getElementById("shortRest");
+    formLongRestElem  = document.getElementById("longRest");
+    formPomosBLRElem  = document.getElementById("pomosPerSession");
+    formServerIPDIVElem = document.getElementById("serverIPDIV");
+    formServerIPElem = document.getElementById("serverIP");
 
-var alertAudio = new Audio('sfx/bell.mp3');
+    //set values on forms from saved settings
+    formFocusTimeElem.value = focusTime/60;
+    formShortRestElem.value = shortRestTime/60;
+    formLongRestElem.value  = longRestTime/60;
+    formPomosBLRElem.value  = pomosBeforeLongRest;
+    formServerIPElem.value  = onlineIP;
+
+    alertAudio = new Audio('sfx/bell.mp3');
+}
 
 function testSound(){
     alertAudio.play();
@@ -158,34 +197,36 @@ function toggleSettings(){
 }
 
 // catpure space bar to pause
-document.body.onkeyup = function(e){
-    if(e.keyCode == 32 || e.key === 'Spacebar' || e.key === ' '){
-        togglePause();
-    }
-}
-
-let timeAccumulator = 0;
-let prevIterTS = Date.now();
-var timeCounter = setInterval(function() {
-    if (onlineMode == false) {
-    let iterStartTS = Date.now();
-    if (isCounting) {
-        timeAccumulator += iterStartTS - prevIterTS
-        let lostSeconds = Math.floor(timeAccumulator/1000)
-        for(i=0;i<lostSeconds;i++){
-            currTime = currTime + 1;
-            advanceTimeStep();
-            timeAccumulator -= 1000;
+if (typeof window !== 'undefined') {
+    document.body.onkeyup = function(e){
+        if(e.keyCode == 32 || e.key === 'Spacebar' || e.key === ' '){
+            togglePause();
         }
     }
 
-    prevIterTS = Date.now();
-    } else {
-        // If online mode is enabled, use the server JSON API to get the current pomodoro state
-        getOnlineStep();
-    }
+    let timeAccumulator = 0;
+    let prevIterTS = Date.now();
+    var timeCounter = setInterval(function() {
+        if (onlineMode == false) {
+        let iterStartTS = Date.now();
+        if (isCounting) {
+            timeAccumulator += iterStartTS - prevIterTS
+            let lostSeconds = Math.floor(timeAccumulator/1000)
+            for(i=0;i<lostSeconds;i++){
+                currTime = currTime + 1;
+                advanceTimeStep();
+                timeAccumulator -= 1000;
+            }
+        }
 
-}, pollInterval);
+        prevIterTS = Date.now();
+        } else {
+            // If online mode is enabled, use the server JSON API to get the current pomodoro state
+            getOnlineStep();
+        }
+
+    }, pollInterval);
+}
 
 function getOnlineStep() {
     console.log("Getting online step");
@@ -325,6 +366,58 @@ function displayTimer(timeValue) {
 
 }
 
-$(".help-button").on("click", function() {
-    $(".help-button-wrapper").toggleClass("expanded");
-  });
+if (typeof window !== 'undefined') {
+    $(".help-button").on("click", function() {
+        $(".help-button-wrapper").toggleClass("expanded");
+      });
+
+    // periodically snapshot pomodoro state when offline
+    setInterval(function() {
+        if (!onlineMode) {
+            saveCurrentState();
+        }
+    }, snapshotInterval);
+
+    // ensure state is saved when leaving the page
+    window.addEventListener('beforeunload', function() {
+        if (!onlineMode) {
+            saveCurrentState();
+        }
+    });
+}
+
+function saveCurrentState() {
+    const state = {
+        currTime: currTime,
+        pomoCount: pomoCount,
+        isResting: isResting,
+        isLongResting: isLongResting,
+        isCounting: isCounting,
+        timestamp: Date.now()
+    };
+    localStorage.pomoState = JSON.stringify(state);
+}
+
+if (typeof module !== 'undefined') {
+    module.exports = {
+        secondsToString,
+        advanceTimeStep,
+        saveCurrentState,
+        _test: {
+            getState: () => ({ currTime, pomoCount, isResting, isLongResting, isCounting }),
+            setState: (s) => {
+                currTime = s.currTime;
+                pomoCount = s.pomoCount;
+                isResting = s.isResting;
+                isLongResting = s.isLongResting;
+                isCounting = s.isCounting;
+            },
+            setConfig: (c) => {
+                if (c.focusTime !== undefined) focusTime = c.focusTime;
+                if (c.shortRestTime !== undefined) shortRestTime = c.shortRestTime;
+                if (c.longRestTime !== undefined) longRestTime = c.longRestTime;
+                if (c.pomosBeforeLongRest !== undefined) pomosBeforeLongRest = c.pomosBeforeLongRest;
+            }
+        }
+    };
+}
